@@ -1,0 +1,44 @@
+<html>
+
+<head>
+  <title>Express</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+  <h1>TESLA</h1>
+  <p>Model 3 <br>選擇車型 SR, LR, P</p>
+  <!--產生一個表格可以輸入車型 查詢所有日期的價錢-->
+    <form action="/search" method="post">
+        <label for="car">車型:</label>
+        <input type="text" id="car" name="car">
+        <input type="submit" value="查詢">
+    </form>
+  <p id="log"></p>
+    <script>
+        //將上面表單的資料，透過 fetch async await 來發送 POST 請求到/api/insert ，並在成功後顯示伺服器回傳的model訊息
+         const form = document.querySelector('form');
+            form.addEventListener('submit', async (event) => {
+                const mod = document.getElementById('car').value;
+                event.preventDefault();
+                const car = document.getElementById('car').value;
+                const response = await fetch('/api', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({model: mod})
+                });
+                if(response.ok){
+                    const result = await response.json();
+                    const formattedResult = result.map(row => `Model: ${row.model}, Date: ${row.date}, Price: ${row.price}萬台幣`).join('<br>');
+                    document.getElementById('log').innerHTML = formattedResult;
+                }
+                else{
+                    document.getElementById('log').textContent = '查無此車型';
+                }
+            });
+    </script>
+</body>
+
+</html>
