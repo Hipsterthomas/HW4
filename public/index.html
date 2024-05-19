@@ -21,7 +21,6 @@
             form.addEventListener('submit', async (event) => {
                 const mod = document.getElementById('car').value;
                 event.preventDefault();
-                const car = document.getElementById('car').value;
                 const response = await fetch('/api', {
                     method: 'POST',
                     headers: {
